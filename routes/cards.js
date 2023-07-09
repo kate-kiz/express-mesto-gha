@@ -19,7 +19,7 @@ function initCardRoutes(app) {
         }
       })
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Некорректный _id карточки' });
         } else {
           res.status(500).send(error);
@@ -34,7 +34,7 @@ function initCardRoutes(app) {
     return createCard({ name, link, userId })
       .then((card) => res.status(201).send({ data: card }))
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
         } else {
           res.status(500).send(error);
@@ -74,7 +74,7 @@ function initCardRoutes(app) {
         }
       })
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Переданы некорректные данные для снятия лайка' });
         } else {
           res.status(500).send(error);
