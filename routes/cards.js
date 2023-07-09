@@ -34,7 +34,7 @@ function initCardRoutes(app) {
     return createCard({ name, link, userId })
       .then((card) => res.status(201).send({ data: card }))
       .catch((error) => {
-        if (error.name === "ValidationError") {
+        if (error.name === 'ValidationError') {
           res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
         } else {
           res.status(500).send(error);
