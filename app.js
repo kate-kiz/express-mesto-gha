@@ -16,30 +16,10 @@ mongoose.connect(MONGODB_URL, {
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '64a94cc989e843e8393ecfb3',
-//   };
-
-//   res.status(404).send({
-//     message: 'not found',
-//   });
-
-//   next();
-// });
-
-// app.use((req, res, next) => {
-//   const error = new Error('Not Found');
-//   error.status = 404;
-//   next(error);
-// });
-
 app.use((req, res, next) => {
-  if (!req.user) {
-    req.user = {
-      _id: '64a94cc989e843e8393ecfb3',
-    };
-  }
+  req.user = {
+    _id: '64a94cc989e843e8393ecfb3',
+  };
 
   next();
 });
@@ -48,11 +28,7 @@ app.use(bodyParser.json());
 userRoutes(app);
 cardRoutes(app);
 
-app.use((req, res) => {
-  res.status(404).send({
-    message: 'not found',
-  });
-});
+app.use('/', (req, res) => res.status(404).send({ message: 'route not found' }));
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

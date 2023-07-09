@@ -51,7 +51,7 @@ function initUserRoutes(app) {
     return updateAvatar(userId, avatar)
       .then((user) => {
         if (!user) {
-          res.status(404).send({ message: 'Пользователь с указанным _id не найден' });
+          res.status(404).send({ message: `Пользователь с указанным _id=${userId} не найден` });
         } else {
           res.send({ data: user });
         }
