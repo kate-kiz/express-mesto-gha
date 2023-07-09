@@ -34,11 +34,19 @@ const app = express();
 //   next(error);
 // });
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '64a94cc989e843e8393ecfb3',
+  };
+
+  next();
+});
+
 app.use(bodyParser.json());
 userRoutes(app);
 cardRoutes(app);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).send({
     message: 'not found',
   });
