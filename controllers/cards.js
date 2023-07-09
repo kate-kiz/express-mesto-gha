@@ -6,8 +6,10 @@ module.exports.createCard = ({ name, link, userId }) => Card.create({ name, link
 
 module.exports.deleteCard = (cardId) => Card.findByIdAndRemove(cardId);
 
-module.exports.likeCard = (cardId, user) =>
-  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: user._id } }, { new: true });
+module.exports.likeCard = (cardId, user) => (
+  Card.findByIdAndUpdate(cardId, { $addToSet: { likes: user._id } }, { new: true })
+);
 
-module.exports.dislikeCard = (cardId, user) =>
-  Card.findByIdAndUpdate(cardId, { $pull: { likes: user._id } }, { new: true });
+module.exports.dislikeCard = (cardId, user) => (
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: user._id } }, { new: true })
+);

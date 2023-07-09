@@ -1,4 +1,6 @@
-const { getCards, createCard, deleteCard, likeCard, dislikeCard } = require('../controllers/cards');
+const {
+  getCards, createCard, deleteCard, likeCard, dislikeCard,
+} = require('../controllers/cards');
 
 function initCardRoutes(app) {
   app.get('/cards', (req, res) => getCards()

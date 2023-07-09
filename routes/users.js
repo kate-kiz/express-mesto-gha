@@ -1,4 +1,6 @@
-const { getUsers, getUserById, createUser, updateAvatar, updateProfile } = require('../controllers/users');
+const {
+  getUsers, getUserById, createUser, updateAvatar, updateProfile,
+} = require('../controllers/users');
 
 function initUserRoutes(app) {
   app.get('/users', (req, res) => getUsers()
