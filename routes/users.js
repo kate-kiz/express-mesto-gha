@@ -22,7 +22,7 @@ function initUserRoutes(app) {
         }
       })
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Некорректные данные пользователя' });
         } else {
           res.status(500).send(error);
@@ -36,7 +36,7 @@ function initUserRoutes(app) {
     return createUser({ name, about, avatar })
       .then((user) => res.status(201).send({ data: user }))
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
         } else {
           res.status(500).send(error);
@@ -57,7 +57,7 @@ function initUserRoutes(app) {
         }
       })
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Переданы некорректные данные при обновлении аватара' });
         } else {
           res.status(500).send(error);
@@ -79,7 +79,7 @@ function initUserRoutes(app) {
         }
       })
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Переданы некорректные данные при обновлении профиля' });
         } else {
           res.status(500).send(error);

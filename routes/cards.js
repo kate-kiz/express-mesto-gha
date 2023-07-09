@@ -54,7 +54,7 @@ function initCardRoutes(app) {
         }
       })
       .catch((error) => {
-        if (error.name === 'ValidationError') {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
           res.status(400).send({ message: 'Переданы некорректные данные для постановки лайка' });
         } else {
           res.status(500).send(error);
