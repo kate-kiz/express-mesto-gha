@@ -13,7 +13,10 @@ function initUserRoutes(app) {
     return getUserById(userId)
       .then((user) => {
         if (!user) {
-          res.status(404).send('Пользователь по указанному _id не найден');
+          // res.status(404).send('Пользователь по указанному _id не найден');
+          res.status(404).send({
+            message: 'Пользователь по указанному _id не найден',
+          });
         } else {
           res.send({ data: user });
         }

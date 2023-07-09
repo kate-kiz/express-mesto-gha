@@ -21,6 +21,10 @@ app.use((req, res, next) => {
     _id: '64a94cc989e843e8393ecfb3',
   };
 
+  res.status(404).send({
+    message: 'not found',
+  });
+
   next();
 });
 
