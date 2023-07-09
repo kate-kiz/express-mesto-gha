@@ -13,7 +13,7 @@ function initUserRoutes(app) {
     return getUserById(userId)
       .then((user) => {
         if (!user) {
-          res.status(404).send('Пользователь не найден');
+          res.status(404).send('Пользователь по указанному _id не найден');
         } else {
           res.send({ data: user });
         }
@@ -34,7 +34,7 @@ function initUserRoutes(app) {
       .then((user) => res.status(201).send({ data: user }))
       .catch((error) => {
         if (error.name === 'ValidationError') {
-          res.status(404).send({ message: 'Некорректные данные пользователя' });
+          res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
         } else {
           res.status(500).send(error);
         }
@@ -48,7 +48,7 @@ function initUserRoutes(app) {
     return updateAvatar(userId, avatar)
       .then((user) => {
         if (!user) {
-          res.status(404).send('Пользователь не найден');
+          res.status(404).send('Пользователь с указанным _id не найден');
         } else {
           res.send({ data: user });
         }
@@ -70,7 +70,7 @@ function initUserRoutes(app) {
     return updateProfile(userId, name, about)
       .then((user) => {
         if (!user) {
-          res.status(404).send('Пользователь не найден');
+          res.status(404).send('Пользователь с указанным _id не найден.');
         } else {
           res.send({ data: user });
         }
