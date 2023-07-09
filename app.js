@@ -35,9 +35,11 @@ const app = express();
 // });
 
 app.use((req, res, next) => {
-  req.user = {
-    _id: '64a94cc989e843e8393ecfb3',
-  };
+  if (!req.user) {
+    req.user = {
+      _id: '64a94cc989e843e8393ecfb3',
+    };
+  }
 
   next();
 });
