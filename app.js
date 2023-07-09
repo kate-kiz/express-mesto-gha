@@ -16,17 +16,17 @@ mongoose.connect(MONGODB_URL, {
 
 const app = express();
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64a94cc989e843e8393ecfb3',
-  };
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: '64a94cc989e843e8393ecfb3',
+//   };
 
-  res.status(404).send({
-    message: 'not found',
-  });
+//   res.status(404).send({
+//     message: 'not found',
+//   });
 
-  next();
-});
+//   next();
+// });
 
 // app.use((req, res, next) => {
 //   const error = new Error('Not Found');
@@ -37,6 +37,12 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 userRoutes(app);
 cardRoutes(app);
+
+app.use((req, res, next) => {
+  res.status(404).send({
+    message: 'not found',
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
