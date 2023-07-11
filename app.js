@@ -6,6 +6,10 @@ const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
 
 const {
+  codeError, messageError,
+} = require('./errors/errors');
+
+const {
   MONGODB_URL = 'mongodb://127.0.0.1:27017/mestodb',
   PORT = 3000 || 4000,
 } = process.env;
@@ -25,10 +29,10 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
-userRoutes(app);
-cardRoutes(app);
+app.use('/users', userRoutes);
+app.use('/cards', cardRoutes);
 
-app.use('/', (req, res) => res.status(404).send({ message: 'route not found' }));
+app.use('/', (req, res) => res.status(codeError.NOT_FOUND).send({ message: messageError.notFoundError }));
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
