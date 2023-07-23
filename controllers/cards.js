@@ -1,31 +1,33 @@
 const Card = require('../models/card');
 
-const {
-  codeSuccess, codeCreated, codeError, messageError, handleErrors,
-} = require('../errors/errors');
+const { handleErrors } = require('../errors/errors');
 
 const getCards = (req, res) => {
   Card.find({})
-    .then((results) => res.status(codeSuccess.OK).send({ data: results }))
-    .catch(() => res.status(codeError.SERVER_ERROR).send({ message: messageError.defaultError }));
+    .then((results) => res.send({ data: results }))
+    .catch((error) => handleErrors(res, error));
 };
 
 const createCard = (req, res) => {
   const { name, link } = req.body;
   const userId = req.user._id;
   Card.create({ name, link, owner: userId })
-    .then((card) => res.status(codeCreated.OK).send({ data: card }))
+    .then((card) => res.send({ data: card }))
     .catch((error) => handleErrors(res, error));
 };
 
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
-  Card.findByIdAndRemove(cardId)
+  Card.findById(cardId)
     .then((card) => {
       if (!card) {
-        res.status(codeError.NOT_FOUND).send({ message: messageError.notFoundError });
-      } else {
+        throw new Error('UserNotFound');
+      }
+      if (req.user._id === card.owner.toString()) {
+        card.deleteOne();
         res.send({ data: card });
+      } else {
+        throw new Error('NotData');
       }
     })
     .catch((error) => handleErrors(res, error));
@@ -36,7 +38,7 @@ const likeCard = (req, res) => {
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(codeError.NOT_FOUND).send({ message: messageError.notFoundError });
+        throw new Error('UserNotFound');
       } else {
         res.send({ data: card });
       }
@@ -49,7 +51,7 @@ const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(cardId, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(codeError.NOT_FOUND).send({ message: messageError.notFoundError });
+        throw new Error('UserNotFound');
       } else {
         res.send({ data: card });
       }
