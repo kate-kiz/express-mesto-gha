@@ -27,7 +27,7 @@ const deleteCard = (req, res) => {
         card.deleteOne();
         res.send({ data: card });
       } else {
-        throw new Error('NotData');
+        throw new Error('Forbidden');
       }
     })
     .catch((error) => handleErrors(res, error));

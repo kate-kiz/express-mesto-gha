@@ -29,6 +29,9 @@ const messageError = {
 };
 
 const handleErrors = (res, error) => {
+  console.log('end');
+  console.log(error.name);
+  console.log(error.message);
   if (error.name === 'ValidationError' || error.name === 'CastError') {
     res.status(codeError.BAD_REQUEST).send({ message: messageError.badDataError });
     return;
@@ -42,6 +45,10 @@ const handleErrors = (res, error) => {
     return;
   }
   if (error.status === 403) {
+    res.status(codeError.FORBIDDREN).send({ message: messageError.ForbiddenError });
+    return;
+  }
+  if (error.message === 'Forbidden') {
     res.status(codeError.FORBIDDREN).send({ message: messageError.ForbiddenError });
     return;
   }

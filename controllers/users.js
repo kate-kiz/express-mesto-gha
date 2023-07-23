@@ -42,6 +42,7 @@ const getUserInfo = (req, res) => {
 };
 
 const createUser = (req, res) => {
+  // console.log('enter');
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -59,6 +60,9 @@ const login = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email }).select('+password')
     .then((user) => {
+      if (!user) {
+        throw new Error('NotData');
+      }
       bcrypt.compare(password, user.password)
         .then((isValidUser) => {
           if (isValidUser) {
@@ -72,9 +76,9 @@ const login = (req, res) => {
           } else {
             throw new Error('NotData');
           }
-        })
-        .catch((error) => handleErrors(res, error));
-    });
+        });
+    })
+    .catch((error) => handleErrors(res, error));
 };
 
 const updateAvatar = (req, res) => {
