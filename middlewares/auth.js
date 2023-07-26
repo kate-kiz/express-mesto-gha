@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
+const UnauthorizedError = require('../errors/UnauthorizedError');
+
 const {
-  codeError, messageError,
+  messageError,
 } = require('../errors/errors');
 
 const { JWT_SECRET = 'test-secret' } = process.env;
@@ -13,7 +15,7 @@ const auth = (req, res, next) => {
     req.user = payload;
     next();
   } catch (err) {
-    res.status(codeError.UNAUTHORIZED).send({ message: messageError.UnauthorizedError });
+    throw new UnauthorizedError(messageError.UnauthorizedError);
   }
 };
 

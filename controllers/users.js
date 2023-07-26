@@ -1,47 +1,47 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-// const {
-//   codeSuccess, codeCreated, codeError, handleErrors, messageError,
-// } = require('../errors/errors');
-const { handleErrors } = require('../errors/errors');
+const NotFoundError = require('../errors/NotFoundError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
+const { messageError } = require('../errors/errors');
+// const { handleErrors } = require('../errors/errors');
 
 const { JWT_SECRET = 'test-secret' } = process.env;
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     // .then((results) => res.status(codeSuccess.OK).send({ data: results }))
     .then((results) => res.send({ data: results }))
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   const { userId } = req.params;
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        throw new Error('UserNotFound');
+        throw new NotFoundError(messageError.notFoundError);
       } else {
         res.send({ data: user });
       }
     })
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
-const getUserInfo = (req, res) => {
+const getUserInfo = (req, res, next) => {
   const id = req.user._id;
   User.findById(id)
     .then((user) => {
       if (!user) {
-        throw new Error('UserNotFound');
+        throw new NotFoundError(messageError.notFoundError);
       } else {
         res.send(user);
       }
     })
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   // console.log('enter');
   const {
     name, about, avatar, email, password,
@@ -53,15 +53,15 @@ const createUser = (req, res) => {
     .then((user) => res.send({
       name: user.name, about: user.about, avatar: user.avatar, email: user.email,
     }))
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new Error('NotData');
+        throw new UnauthorizedError(messageError.UnauthorizedError);
       }
       bcrypt.compare(password, user.password)
         .then((isValidUser) => {
@@ -74,39 +74,39 @@ const login = (req, res) => {
             res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true })
               .send({ data: { name: user.name, about: user.about, _id: user._id } });
           } else {
-            throw new Error('NotData');
+            throw new UnauthorizedError(messageError.UnauthorizedError);
           }
         });
     })
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const userId = req.user._id;
   const { avatar } = req.body;
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new Error('UserNotFound');
+        throw new NotFoundError(messageError.notFoundError);
       } else {
         res.send({ data: user });
       }
     })
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   const userId = req.user._id;
   const { name, about } = req.body;
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new Error('UserNotFound');
+        throw new NotFoundError(messageError.notFoundError);
       } else {
         res.send({ data: user });
       }
     })
-    .catch((error) => handleErrors(res, error));
+    .catch((error) => next(error, req, res));
 };
 
 module.exports = {
