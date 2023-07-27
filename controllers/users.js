@@ -12,7 +12,7 @@ const getUsers = (req, res, next) => {
   User.find({})
     // .then((results) => res.status(codeSuccess.OK).send({ data: results }))
     .then((results) => res.send({ data: results }))
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const getUserById = (req, res, next) => {
@@ -25,7 +25,7 @@ const getUserById = (req, res, next) => {
         res.send({ data: user });
       }
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const getUserInfo = (req, res, next) => {
@@ -38,7 +38,7 @@ const getUserInfo = (req, res, next) => {
         res.send(user);
       }
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const createUser = (req, res, next) => {
@@ -53,7 +53,7 @@ const createUser = (req, res, next) => {
     .then((user) => res.send({
       name: user.name, about: user.about, avatar: user.avatar, email: user.email,
     }))
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const login = (req, res, next) => {
@@ -78,7 +78,7 @@ const login = (req, res, next) => {
           }
         });
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const updateAvatar = (req, res, next) => {
@@ -92,7 +92,7 @@ const updateAvatar = (req, res, next) => {
         res.send({ data: user });
       }
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const updateProfile = (req, res, next) => {
@@ -106,7 +106,7 @@ const updateProfile = (req, res, next) => {
         res.send({ data: user });
       }
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 module.exports = {

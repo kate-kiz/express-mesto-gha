@@ -21,13 +21,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    // Без этого правила eslintrc не проходит test-config, автотесты падают
-    'no-console': [
-      'error',
-      {
-        allow:
-          ['log'],
-      }],
     'no-underscore-dangle': [
       'error',
       {

@@ -6,7 +6,7 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const getCards = (req, res, next) => {
   Card.find({})
     .then((results) => res.send({ data: results }))
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const createCard = (req, res, next) => {
@@ -14,7 +14,7 @@ const createCard = (req, res, next) => {
   const userId = req.user._id;
   Card.create({ name, link, owner: userId })
     .then((card) => res.send({ data: card }))
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const deleteCard = (req, res, next) => {
@@ -31,7 +31,7 @@ const deleteCard = (req, res, next) => {
       }
       throw new ForbiddenError(messageError.ForbiddenError);
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const likeCard = (req, res, next) => {
@@ -44,7 +44,7 @@ const likeCard = (req, res, next) => {
         res.send({ data: card });
       }
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 const dislikeCard = (req, res, next) => {
@@ -57,7 +57,7 @@ const dislikeCard = (req, res, next) => {
         res.send({ data: card });
       }
     })
-    .catch((error) => next(error, req, res));
+    .catch((error) => next(error));
 };
 
 module.exports = {
